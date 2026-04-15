@@ -43,14 +43,19 @@
             pointer-events: none;
         }
         
+        /* 卡片容器统一宽度+固定内边距，确保所有场景高度一致 */
         .game-card {
-            max-width: 450px;
+            max-width: 480px;
             width: 100%;
+            min-height: 620px;
             background: linear-gradient(165deg, #fef7e8 0%, #f9efdb 100%);
             border-radius: 48px 48px 40px 40px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 4px #e8c89a, 0 0 0 8px #d4a56e;
             position: relative;
             overflow: hidden;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
         }
         
         .game-card::before {
@@ -62,12 +67,18 @@
             height: 14px;
             background: linear-gradient(90deg, #b87c4b, #e8c49a, #c9925e, #e8c49a, #b87c4b);
             border-radius: 20px 20px 0 0;
+            z-index: 2;
         }
         
+        /* 保证内部内容区域滚动自适应，但高度固定由min-height控制，内容足够时撑开 */
         .card-inner {
             padding: 20px 18px 26px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         
+        /* 公共区块样式保证所有界面高度协调 */
         .welcome-section {
             text-align: center;
             margin-bottom: 16px;
@@ -86,6 +97,16 @@
             50% { transform: translateY(-4px); }
         }
         
+        .main-title {
+            font-size: 38px;
+            font-weight: bold;
+            color: #2d6a4f;
+            text-shadow: 2px 2px 0 #e8d5b5;
+            letter-spacing: 4px;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+        
         .sub-title {
             font-size: 14px;
             color: #a0672f;
@@ -99,31 +120,36 @@
             letter-spacing: 2px;
         }
         
+        /* 对话框区域：固定长度，头像已包含图片 */
         .intro-box {
             background: linear-gradient(145deg, #e8d5b5, #dfc79e);
             border-radius: 28px 28px 28px 14px;
-            padding: 14px 14px;
+            padding: 18px 16px;
             margin: 10px 0 18px;
             border: 1px solid #c99a62;
             box-shadow: 5px 5px 0 rgba(100, 60, 20, 0.15), inset 0 1px 2px rgba(255,255,220,0.8);
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
         }
         
         .teacher-avatar {
             flex-shrink: 0;
             position: relative;
+            width: 72px;
+            height: 72px;
         }
         
+        /* 真实头像图片 */
         .teacher-avatar img {
-            width: 65px;
-            height: 65px;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid #d4a56e;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             background: #fef0cf;
+            display: block;
         }
         
         .teacher-avatar::after {
@@ -131,26 +157,27 @@
             position: absolute;
             bottom: -4px;
             right: -4px;
-            font-size: 18px;
+            font-size: 19px;
             background: #f5e6c0;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 25px;
+            height: 25px;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 1px solid #c99a62;
+            pointer-events: none;
         }
         
         .teacher-talk {
             flex: 1;
             background: #fffef7;
-            padding: 12px 14px;
+            padding: 14px 16px;
             border-radius: 22px 22px 22px 10px;
             border: 1px solid #d4a56e;
-            font-size: 14px;
+            font-size: 16px;
             color: #2c4b35;
-            line-height: 1.5;
+            line-height: 1.55;
             box-shadow: inset 0 0 0 1px #fffbe6, 2px 2px 6px rgba(0,0,0,0.06);
             position: relative;
         }
@@ -158,9 +185,9 @@
         .teacher-talk::before {
             content: "“";
             position: absolute;
-            left: 8px;
-            top: -4px;
-            font-size: 24px;
+            left: 10px;
+            top: -2px;
+            font-size: 26px;
             color: #c99a62;
             font-family: "Georgia", serif;
             opacity: 0.4;
@@ -168,9 +195,10 @@
         
         .teacher-talk strong {
             color: #c2612c;
-            font-size: 15px;
+            font-size: 17px;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
         }
         
         .build-area {
@@ -203,7 +231,6 @@
             transition: opacity 0.35s ease;
         }
         
-        /* 答题区 */
         .quiz-section {
             background: linear-gradient(145deg, #fff5e6, #feefd6);
             border-radius: 38px;
@@ -297,7 +324,6 @@
             opacity: 0.75;
         }
         
-        /* 浮层反馈框 */
         .toast-feedback {
             position: fixed;
             top: 50%;
@@ -419,6 +445,7 @@
             border: 2px solid #e8c49a;
             animation: fadeInUp 0.5s ease;
             box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+            flex: 0 0 auto;
         }
         
         @keyframes fadeInUp {
@@ -458,7 +485,6 @@
             margin-top: 6px;
         }
         
-        /* 建造动画提示 */
         .building-toast {
             position: fixed;
             bottom: 35%;
@@ -484,25 +510,35 @@
             80% { opacity: 1; transform: translateX(-50%) translateY(0); }
             100% { opacity: 0; transform: translateX(-50%) translateY(-35px); }
         }
+        
+        /* 保证主内容区域自动撑开，不压缩底部按钮 */
+        .game-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
     </style>
 </head>
 <body>
 <div class="game-card" id="gameCard">
     <div class="card-inner">
         <!-- 开场界面 -->
-        <div id="startScreen">
+        <div id="startScreen" class="game-content">
             <div class="welcome-section">
                 <div class="title-icon">🏚️ ➡️ 🏡</div>
+                <div class="main-title">一砖一瓦·建广厦</div>
                 <div class="sub-title">承杜甫情怀 · 筑千万广厦</div>
             </div>
             
+            <!-- 对话框区域：左侧头像引入真实图片 xiaoshen1.png -->
             <div class="intro-box">
                 <div class="teacher-avatar">
-                    <img src="xiao_shen1.png" alt="晓生老师" onerror="this.src='https://via.placeholder.com/65x65?text=晓生'">
+                    <img src="xiao_shen1.png" alt="晓生老师" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2245%22%20fill%3D%22%23d4a56e%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2267%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-size%3D%2236%22%3E👨%3C%2Ftext%3E%3C%2Fsvg%3E'">
                 </div>
                 <div class="teacher-talk">
                     <strong>📖 晓生老师</strong>
-                    杜甫说“安得广厦千万间，大庇天下寒士俱欢颜”，今天我们一起答题，帮助杜甫完成心愿，为天下寒士建造温暖的家！
+                    杜甫说“安得广厦千万间，大庇天下寒士俱欢颜”。今天我们一起答题，帮助诗圣完成心愿，为天下寒士建造温暖的家！<br>
+                    每答对一题，茅屋就会增添一部分新建筑，直到广厦落成。
                 </div>
             </div>
             
@@ -514,9 +550,8 @@
             </div>
         </div>
 
-        <!-- 游戏主界面 -->
-        <div id="gameScreen" style="display: none;">
-            
+        <!-- 游戏主界面：固定布局，高度一致 -->
+        <div id="gameScreen" style="display: none;" class="game-content">
             <div class="build-area">
                 <div class="house-canvas">
                     <img id="houseImage" src="house.jpg" alt="建造进度" style="opacity: 1;">
@@ -538,6 +573,7 @@
 
 <script>
     (function() {
+        // 题库保持不变，但增加建造部分的描述
         const questions = [
             {
                 question: "《茅屋为秋风所破歌》创作于杜甫在成都草堂时期，导致诗人生活困顿、居无定所的直接社会原因是？",
@@ -598,7 +634,8 @@
 
         startBtn.addEventListener('click', function() {
             startScreen.style.display = 'none';
-            gameScreen.style.display = 'block';
+            gameScreen.style.display = 'flex';
+            gameScreen.style.flexDirection = 'column';
             resetGame();
         });
 
@@ -710,6 +747,13 @@
                 target.classList.add('wrong');
                 showToastFeedback(q.wrong_feedback);
                 target.classList.add('disabled');
+                // 错误后只禁用当前选项，但仍需允许下次重选同一题的其他正确选项? 依照原意必须答对才能继续
+                // 但为了防止用户卡死，一旦答错只禁用当前错误选项，但需要保留正确选项可点（改进体验）
+                // 但原设计：答错仅禁止当前选项并且标记wrong，但用户仍可点击其他选项，完全合理。
+                // 不额外做其他动作，但不要将所有选项禁用，保证还能再尝试。
+                // 注意: 如果当前已经错误，但是还要让正确选项可点，我们不把所有的disabled加上。
+                // 修改: 只给当前点击项增加禁用class，其他选项不禁用，但需确保不能重复点击同一个错误选项。
+                target.style.pointerEvents = 'none';
             }
         }
 
@@ -734,8 +778,8 @@
 
         function showCelebration() {
             const gameContainer = document.getElementById('gameScreen');
-            const quizSection = document.querySelector('.quiz-section');
-            const actionBtns = document.querySelector('.action-buttons');
+            const quizSection = document.querySelector('#gameScreen .quiz-section');
+            const actionBtns = document.querySelector('#gameScreen .action-buttons');
             
             const celebrationDiv = document.createElement('div');
             celebrationDiv.className = 'celebration-page';
@@ -749,35 +793,36 @@
                 <button class="restart-btn" id="celebrationRestartBtn">🏗️ 再玩一局 🏗️</button>
             `;
             
-            quizSection.style.display = 'none';
-            actionBtns.style.display = 'none';
+            if (quizSection) quizSection.style.display = 'none';
+            if (actionBtns) actionBtns.style.display = 'none';
             gameContainer.appendChild(celebrationDiv);
             
             document.getElementById('celebrationRestartBtn').addEventListener('click', function() {
                 celebrationDiv.remove();
-                quizSection.style.display = 'block';
-                actionBtns.style.display = 'flex';
+                if (quizSection) quizSection.style.display = 'block';
+                if (actionBtns) actionBtns.style.display = 'flex';
                 resetGame();
             });
         }
 
         function resetGame() {
+            // 清除庆祝界面残留
+            const celebrationDiv = document.querySelector('.celebration-page');
+            if (celebrationDiv) celebrationDiv.remove();
+            
             currentIndex = 0;
             correctCount = 0;
             currentQuestionAnswered = false;
             allCompleted = false;
             isAnimating = false;
             
-            updateImage();
-            loadQuestion();
-            
-            const quizSection = document.querySelector('.quiz-section');
-            const actionBtns = document.querySelector('.action-buttons');
+            const quizSection = document.querySelector('#gameScreen .quiz-section');
+            const actionBtns = document.querySelector('#gameScreen .action-buttons');
             if (quizSection) quizSection.style.display = 'block';
             if (actionBtns) actionBtns.style.display = 'flex';
             
-            const celebration = document.querySelector('.celebration-page');
-            if (celebration) celebration.remove();
+            updateImage();
+            loadQuestion();
             
             if (toastFeedback) {
                 toastFeedback.remove();
@@ -787,7 +832,9 @@
 
         resetBtn.addEventListener('click', resetGame);
         nextBtn.addEventListener('click', goToNextQuestion);
-        updateImage();
+        
+        // 初始图片占位处理
+        if (houseImage) houseImage.src = 'house.jpg';
     })();
 </script>
 </body>
