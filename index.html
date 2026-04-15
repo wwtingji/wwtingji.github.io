@@ -242,7 +242,6 @@
         }
         
         .quiz-section::before {
-            content: "✍️";
             position: absolute;
             top: -11px;
             left: 18px;
@@ -324,30 +323,47 @@
             opacity: 0.75;
         }
         
-        .toast-feedback {
+        /* ========= 改进后的多行反馈卡片（手机友好） ========= */
+        .feedback-card {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(145deg, #2c3a1f, #1a2a10);
-            color: #ffdd88;
-            padding: 14px 28px;
-            border-radius: 60px;
-            font-size: 18px;
+            max-width: 85%;
+            width: auto;
+            min-width: 220px;
+            background: linear-gradient(145deg, #2c3a1f, #1f2e12);
+            color: #ffefb9;
+            padding: 18px 22px;
+            border-radius: 32px;
+            font-size: 16px;
             font-weight: bold;
             z-index: 200;
             text-align: center;
             font-family: "KaiTi", "楷体", serif;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.35);
-            border: 1px solid #ffdd88;
-            white-space: nowrap;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.45), 0 0 0 2px #ffdd88, 0 0 0 5px #6b4c2c;
+            border: none;
+            line-height: 1.5;
+            white-space: normal;
+            word-break: break-word;
             opacity: 0;
             transition: opacity 0.2s ease;
             pointer-events: none;
+            backdrop-filter: blur(2px);
         }
         
-        .toast-feedback.show {
+        .feedback-card.show {
             opacity: 1;
+        }
+        
+        /* 小屏幕上适当调整内边距和字号 */
+        @media (max-width: 480px) {
+            .feedback-card {
+                padding: 16px 20px;
+                font-size: 15px;
+                max-width: 90%;
+                border-radius: 28px;
+            }
         }
         
         .action-buttons {
@@ -525,8 +541,8 @@
         <!-- 开场界面 -->
         <div id="startScreen" class="game-content">
             <div class="welcome-section">
-                <div class="title-icon">🏚️ ➡️ 🏡</div>
-                <div class="main-title">一砖一瓦·建广厦</div>
+                <div class="main-title">一砖一瓦</div>
+                <div class="main-title">建广厦</div>
                 <div class="sub-title">承杜甫情怀 · 筑千万广厦</div>
             </div>
             
@@ -573,47 +589,47 @@
 
 <script>
     (function() {
-        // 题库保持不变，但增加建造部分的描述
+        // 题库保持不变，但建造部分的描述保留原有部分名称
         const questions = [
             {
                 question: "《茅屋为秋风所破歌》创作于杜甫在成都草堂时期，导致诗人生活困顿、居无定所的直接社会原因是？",
                 options: ["A. 个人不善理财", "B. 安史之乱，时局动荡", "C. 蜀地常年台风灾害", "D. 朝廷刻意打压"],
                 correct: 1,
                 partName: "房屋框架",
-                correct_feedback: "✅ 答对！安史之乱让大唐由盛转衰，也让杜甫颠沛流离！",
-                wrong_feedback: "❌ 不对～杜甫的苦难根源是时代动荡！"
+                correct_feedback: "✅ 答对！\n安史之乱让大唐由盛转衰，也让杜甫颠沛流离！",
+                wrong_feedback: "❌ 不对～\n杜甫的苦难根源是时代动荡！"
             },
             {
                 question: "“南村群童欺我老无力，忍能对面为盗贼” 一句中，“盗贼” 一词理解最准确的是？",
                 options: ["A. 杜甫真的认为孩童是盗贼，充满愤怒", "B. 无奈自嘲，折射战乱中民生凋敝", "C. 批评孩童道德败坏", "D. 指责乡邻管教不严"],
                 correct: 1,
                 partName: "坚实墙壁",
-                correct_feedback: "✅ 精准！这是无奈自嘲，更是对乱世百姓疾苦的悲悯！",
-                wrong_feedback: "❌ 答错～这是乱世里的心酸自嘲哦！"
+                correct_feedback: "✅ 精准！\n这是无奈自嘲，更是对乱世百姓疾苦的悲悯！",
+                wrong_feedback: "❌ 答错～\n这是乱世里的心酸自嘲哦！"
             },
             {
                 question: "杜甫由自身“茅屋破漏”推及“天下寒士”，这种情怀在诗中最集中体现的句子是？",
                 options: ["A. 唇焦口燥呼不得，归来倚杖自叹息", "B. 布衾多年冷似铁，娇儿恶卧踏里裂", "C. 安得广厦千万间，大庇天下寒士俱欢颜", "D. 俄顷风定云墨色，秋天漠漠向昏黑"],
                 correct: 2,
                 partName: "温暖屋顶",
-                correct_feedback: "✅ 完全正确！由己及人、心忧苍生，这正是诗圣最伟大的地方！",
-                wrong_feedback: "❌ 不对～找诗中最能体现“为天下人发声”的呐喊句！"
+                correct_feedback: "✅ 完全正确！\n由己及人、心忧苍生，这正是诗圣最伟大的地方！",
+                wrong_feedback: "❌ 不对～\n找诗中最能体现“为天下人发声”的呐喊句！"
             },
             {
                 question: "杜甫诗被称为“诗史”，本诗不能体现“诗史”价值的一项是？",
                 options: ["A. 记录安史之乱后民生疾苦", "B. 反映普通士人穷困处境", "C. 展现盛唐繁华气象", "D. 折射战乱年代物资匮乏"],
                 correct: 2,
                 partName: "炊烟烟囱",
-                correct_feedback: "✅ 太棒了！本诗写的是乱世困苦，和盛唐繁华无关！",
-                wrong_feedback: "❌ 答错～这首诗记录的是动荡与穷困！"
+                correct_feedback: "✅ 太棒了！\n本诗写的是乱世困苦，和盛唐繁华无关！",
+                wrong_feedback: "❌ 答错～\n这首诗记录的是动荡与穷困！"
             },
             {
                 question: "关于“吾庐独破受冻死亦足”一句，理解最恰当的是？",
                 options: ["A. 诗人对生活绝望，消极避世", "B. 甘愿自我牺牲，换取天下寒士安居", "C. 无奈抱怨，发泄不满", "D. 故作豪言，并非真心"],
                 correct: 1,
                 partName: "绿树成荫",
-                correct_feedback: "✅ 满分！舍己为人、心怀天下，广厦建成！",
-                wrong_feedback: "❌ 不对～这是杜甫最赤诚的心愿！"
+                correct_feedback: "✅ 满分！\n舍己为人、心怀天下，广厦建成！",
+                wrong_feedback: "❌ 不对～\n这是杜甫最赤诚的心愿！"
             }
         ];
 
@@ -639,27 +655,45 @@
             resetGame();
         });
 
-        let toastFeedback = null;
-        function showToastFeedback(message) {
-            if (toastFeedback) {
-                toastFeedback.remove();
+        let activeFeedbackCard = null;
+        
+        // 改进后的多行反馈弹窗 (自动换行，自适应宽度)
+        function showSmartFeedback(message, isError = false) {
+            if (activeFeedbackCard) {
+                activeFeedbackCard.classList.remove('show');
+                setTimeout(() => {
+                    if (activeFeedbackCard) activeFeedbackCard.remove();
+                    activeFeedbackCard = null;
+                    createAndShowFeedback(message, isError);
+                }, 150);
+            } else {
+                createAndShowFeedback(message, isError);
             }
-            toastFeedback = document.createElement('div');
-            toastFeedback.className = 'toast-feedback';
-            toastFeedback.innerText = message;
-            document.body.appendChild(toastFeedback);
+        }
+        
+        function createAndShowFeedback(message, isError) {
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = 'feedback-card';
+            // 保留换行符，转为html <br>
+            const formattedMsg = message.replace(/\n/g, '<br>');
+            feedbackDiv.innerHTML = formattedMsg;
+            // 如果是对错反馈可以略微调整边框颜色，不强制
+            document.body.appendChild(feedbackDiv);
+            activeFeedbackCard = feedbackDiv;
+            
             setTimeout(() => {
-                toastFeedback.classList.add('show');
+                feedbackDiv.classList.add('show');
             }, 10);
+            
             setTimeout(() => {
-                if (toastFeedback) {
-                    toastFeedback.classList.remove('show');
+                if (feedbackDiv) {
+                    feedbackDiv.classList.remove('show');
                     setTimeout(() => {
-                        if (toastFeedback) toastFeedback.remove();
-                        toastFeedback = null;
+                        if (feedbackDiv && feedbackDiv.parentNode) feedbackDiv.remove();
+                        if (activeFeedbackCard === feedbackDiv) activeFeedbackCard = null;
                     }, 300);
                 }
-            }, 3000);
+            }, 2800);
         }
 
         function showBuildingAnimation(partName, callback) {
@@ -714,6 +748,7 @@
             currentQuestionAnswered = false;
             document.querySelectorAll('.option-item').forEach(btn => {
                 btn.classList.remove('disabled', 'correct', 'wrong');
+                btn.style.pointerEvents = 'auto';
             });
             
             if (nextBtn) {
@@ -730,7 +765,7 @@
             
             if (isCorrect) {
                 target.classList.add('correct');
-                showToastFeedback(q.correct_feedback);
+                showSmartFeedback(q.correct_feedback);
                 currentQuestionAnswered = true;
                 allOpts.forEach(btn => btn.classList.add('disabled'));
                 
@@ -745,14 +780,8 @@
                 });
             } else {
                 target.classList.add('wrong');
-                showToastFeedback(q.wrong_feedback);
+                showSmartFeedback(q.wrong_feedback);
                 target.classList.add('disabled');
-                // 错误后只禁用当前选项，但仍需允许下次重选同一题的其他正确选项? 依照原意必须答对才能继续
-                // 但为了防止用户卡死，一旦答错只禁用当前错误选项，但需要保留正确选项可点（改进体验）
-                // 但原设计：答错仅禁止当前选项并且标记wrong，但用户仍可点击其他选项，完全合理。
-                // 不额外做其他动作，但不要将所有选项禁用，保证还能再尝试。
-                // 注意: 如果当前已经错误，但是还要让正确选项可点，我们不把所有的disabled加上。
-                // 修改: 只给当前点击项增加禁用class，其他选项不禁用，但需确保不能重复点击同一个错误选项。
                 target.style.pointerEvents = 'none';
             }
         }
@@ -761,7 +790,7 @@
             if (allCompleted) return;
             
             if (!currentQuestionAnswered) {
-                showToastFeedback('⚠️ 请先答对当前题目！');
+                showSmartFeedback('⚠️ 请先答对当前题目！');
                 return;
             }
             
@@ -770,9 +799,9 @@
                 currentQuestionAnswered = false;
                 loadQuestion();
             } else if (currentIndex === questions.length - 1 && correctCount === 5) {
-                showToastFeedback('🎉 恭喜！广厦已建成！');
+                showSmartFeedback('🎉 恭喜！广厦已建成！');
             } else {
-                showToastFeedback('📚 这是最后一题，答对即可建成广厦！');
+                showSmartFeedback('📚 这是最后一题，答对即可建成广厦！');
             }
         }
 
@@ -824,9 +853,9 @@
             updateImage();
             loadQuestion();
             
-            if (toastFeedback) {
-                toastFeedback.remove();
-                toastFeedback = null;
+            if (activeFeedbackCard) {
+                activeFeedbackCard.remove();
+                activeFeedbackCard = null;
             }
         }
 
